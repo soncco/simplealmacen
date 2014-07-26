@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load user_groups %}
+<div class="page-header">
+  <h3><i class="fa fa-file icon-new"></i> Comisiones
+    {% if post %}
+    <span class="small pull-right">
+      <button class="btn btn-primary btn-sm print" type="button"><i class="fa fa-print"></i> Imprimir Liquidación</button>
+    </span>
+    {% endif %}
+  </h3>
+</div>
+<form class="form form-inline" method="post" action="{% url 'comisiones' %}">
+  {% ifusergroup Administradores %}
+  <div class="form-group">
+    <select name="user" id="user" class="form-control" required>
+      <option value="">Usuario</option>
+      {% for user in users %}
+      <option value="{{ user.pk }}"{% if user.pk == iduser %}selected{% endif %}>{{ user.username }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  {% endifusergroup %}
+  <div class="form-group">
+    <input type="text" class="form-control datepicker" name="fecha" id="fecha" required autocomplete="off" placeholder="Fecha Inicial" value="{{ fecha }}">
+  </div>
+  <div class="form-group">
+    <input type="text" class="form-control datepicker" name="fecha_fin" id="fecha_fin" required autocomplete="off" placeholder="Fecha Final" value="{{ fecha_fin }}">
+  </div>
+  <button type="submit" class="btn btn-info"><i class="fa fa-cubes"></i> Ver comisiones</button>
+  {% csrf_token %}
+</form>
+
+{% if method == 'post' %}
+<table class="table table-hovered table-striped table-bordered">
+  <thead>
+    <tr>
+      <th>Venta</th>
+      <th>Fecha Documento</th>
+      <th>Precio Real</th>
+      <th>Precio Venta</th>
+      <th>Cantidad</th>
+      <th>Comisión</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for comision in comisiones %}
+    <tr>
+      <td class=""><a href="{% url 'venta_view' comision.registro_padre.pk %}">Venta Nro {{comision.registro_padre.pk}}</a></td>
+      <td class="text-right">{{comision.registro_padre.fecha_documento}}</td>
+      <td class="text-right">{{comision.precio_unitario}}</td>
+      <td class="text-right">{{comision.precio_venta}}</td>
+      <td class="text-right">{{comision.cantidad}}</td>
+      <td class="text-right">{{comision.comision}}</td>
+    </tr>
+    {% endfor %}
+    <tfoot>
+      <tr>
+        <td colspan="5" class="text-right">Total:</td>
+        <td class="text-right">{{total}}</td>
+      </tr>
+    </tfoot>
+  </tbody>
+</table>
+{% endif %}
+{% endblock %}
+
+{% block js %}
+<script src="/media/js/main.js"></script>
+<script src="/media/js/liquidacion.js"></script>
+{% endblock %}
+
+{% block title %}Liquidación{% endblock %}

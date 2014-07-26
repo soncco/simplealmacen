@@ -1,0 +1,46 @@
+{% load user_groups %}
+{% if user.is_authenticated %}
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Ventas <b class="caret"></b></a>
+  <ul class="dropdown-menu">
+    <li><a href="{% url 'ventas' %}">Relación de Ventas</a></li>
+    <li class="divider"></li>
+    <li><a href="{% url 'venta' %}">Registrar Venta</a></li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Almacén <b class="caret"></b></a>
+  <ul class="dropdown-menu">
+    <li><a href="{% url 'entradas' %}">Relación de Entradas</a></li>
+    <li><a href="{% url 'salidas' %}">Relación de Salidas</a></li>
+    <li class="divider"></li>
+    <li><a href="{% url 'entrada' %}">Registrar Entrada</a></li>
+    <li><a href="{% url 'salida' %}">Registrar Salida</a></li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Diario <b class="caret"></b></a>
+  <ul class="dropdown-menu">
+    <li><a href="{% url 'gastos' %}">Relación de Gastos</a></li>
+    <li class="divider"></li>
+    <li><a href="{% url 'gasto' %}">Registrar Gasto</a></li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Informes <b class="caret"></b></a>
+  <ul class="dropdown-menu">
+    <li><a href="{% url 'liquidacion' %}">Liquidación</a></li>
+    <li class="divider"></li>
+    <li><a href="{% url 'inventario' %}">Inventario</a></li>
+    <li class="divider"></li>
+    <li><a href="{% url 'proveedores' %}">Lista de Proveedores</a></li>
+    {% ifusergroup Administradores %}
+    <li class="divider"></li>
+    <li><a href="{% url 'comisiones' %}">Comisiones</a></li>
+    {% endifusergroup %}
+  </ul>
+</li>
+{% ifusergroup Administradores %}
+<li><a href="/admin" target="_blank">Administración</a></li>
+{% endifusergroup %}
+{% endif %}
