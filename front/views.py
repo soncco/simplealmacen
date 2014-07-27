@@ -20,7 +20,7 @@ from ventas.models import Venta, VentaDetalle
 
 from almacen.forms import EntradaForm, EntradaDetalleFormSet, SalidaForm, SalidaDetalleFormSet
 from almacen.models import Almacen, Entrada, Salida, Stock
-from almacen.utils import generar_salida_venta, entrada_stock, salida_stock, total_monto_stock, total_monto_stock_real
+from almacen.utils import generar_salida_venta, entrada_stock, salida_stock, total_monto_stock
 
 from core.models import Gasto, Proveedor
 
@@ -207,7 +207,7 @@ def inventario_print(request, id):
   almacen = Almacen.objects.get(pk = id)
   stock = Stock.objects.filter(en_almacen = almacen)
   resp = HttpResponse(content_type = 'application/pdf')
-  context = {'stock': stock, 'almacen': almacen, 'total': total_monto_stock(almacen), 'total_real': total_monto_stock_real(almacen)}
+  context = {'stock': stock, 'almacen': almacen, 'total': total_monto_stock(almacen)}
   result = generate_pdf('pdf/inventario.html', file_object = resp, context = context)
   return result
 

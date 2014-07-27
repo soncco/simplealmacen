@@ -60,10 +60,3 @@ def total_monto_stock(en_almacen):
 
 def get_unitario(producto):
   return (producto.precio_credito / producto.unidad_caja)
-
-def total_monto_stock_real(en_almacen):
-  stock = Stock.objects.filter(en_almacen = en_almacen)
-  total = 0
-  for row in stock:
-    total += row.unidades * get_unitario(row.producto)
-  return total
