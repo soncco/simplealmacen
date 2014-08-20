@@ -255,7 +255,11 @@ def liquidacion_print(request, fecha, id, user):
   context = {}
 
   almacen = Almacen.objects.get(pk = id)
-  quien = User.objects.get(pk = user)
+  if request.POST.get('user'):
+    quien = request.POST.get('user')
+    quien = User.objects.get(pk = quien)
+  else:
+    quien = request.user
 
   context['almacen'] = almacen
   context['fecha'] = fecha
